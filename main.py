@@ -27,11 +27,13 @@ PACKAGES_TO_INSTALL = [
 
 def pre_check(console: Console, console_error: Console):
 	if os.getuid() != 0:
+		console.rule("Pre-Checks")
 		console_error.print("Please run as root")
 		sys.exit(1)
 
 	# noinspection SpellCheckingInspection
 	if platform.freedesktop_os_release()["ID"] not in ["ubuntu", "debian"]:
+		console.rule("Pre-Checks")
 		console.print("Only Ubuntu and Debian are supported. You may try to run the script at your own risk",
 		              style="yellow")
 		if not Confirm.ask("Continue?", default=False):
@@ -44,6 +46,7 @@ def install_packages(console: Console):
 	upgrade_method_prompt = """Choose apt upgrade method:
 1. apt upgrade (default, normally you should choose this)
 2. apt full-upgrade (required on Proxmox VE / Proxmox Backup Server hosts, per the official Proxmox documentation)"""
+	console.rule("Upgrade Method")
 	console.print(upgrade_method_prompt)
 	upgrade_method = Prompt.ask("Upgrade method", choices=['1', '2'], default='1')
 	if upgrade_method == '1':
@@ -61,6 +64,8 @@ def add_ssh_key(console: Console):
 	ssh_dir.mkdir(mode=0o700, exist_ok=True)
 	authorized_keys_file = ssh_dir / "authorized_keys"
 	authorized_keys_file.touch(mode=0o600, exist_ok=True)
+
+	console.rule("SSH Key Management")
 
 	with open(authorized_keys_file) as f:
 		current_authorized_keys = f.read()
@@ -98,6 +103,8 @@ def check_swap(console: Console):
 	swap_total_gb = swap_total_kb / 1024 / 1024
 	disk_free_gb = round(disk_free_bytes / 1024 / 1024 / 1024)
 
+	console.rule("Swap Check")
+
 	console.print(f"Total Memory: {mem_total_gb:.2f} GB")
 	console.print(f"Total Swap: {swap_total_gb:.2f} GB")
 	console.print(f"Free Disk Space: {disk_free_gb} GB")
@@ -109,6 +116,7 @@ def check_swap(console: Console):
 def change_timezone(console: Console):
 	current_timezone = run(["timedatectl", "show", "-P", "Timezone"], capture_output=True, text=True).stdout.strip()
 
+	console.rule("Timezone Configuration")
 	console.print(f"Current Timezone: {current_timezone}")
 	new_timezone = Prompt.ask("Enter new timezone (e.g., 'Asia/Tokyo') or leave empty to skip", default="",
 	                          show_default=False)
@@ -117,10 +125,11 @@ def change_timezone(console: Console):
 		run(["timedatectl", "set-timezone", new_timezone], check=True)
 
 
-def install_docker():
+def install_docker(console: Console):
 	if which("docker") is not None:
 		return
 
+	console.rule("Docker Installation")
 	if Confirm.ask("Install Docker?", default=False):
 		run(["curl", "-fsSL", "https://get.docker.com", "-o", "get-docker.sh"], check=True)
 		run(["sh", "get-docker.sh"], check=True)
@@ -183,7 +192,7 @@ def main():
 	add_ssh_key(console)
 	check_swap(console)
 	change_timezone(console)
-	install_docker()
+	install_docker(console)
 	enable_bbr()
 	install_paping()
 	install_oh_my_zsh()
