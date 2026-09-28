@@ -1,0 +1,12 @@
+# search hidden files and directories
+--hidden
+
+# ignore /proc /sys /dev /run
+--glob=!proc/
+--glob=!sys/
+--glob=!dev/
+--glob=!run/
+
+# ignore .git/ and .cache/
+--glob=!.git/
+--glob=!.cache/

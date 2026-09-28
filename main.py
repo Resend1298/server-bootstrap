@@ -10,8 +10,14 @@ from rich.prompt import Confirm, Prompt
 
 # noinspection SpellCheckingInspection
 PACKAGES_TO_INSTALL = [
+	"fd-find",
+	"fzf",
+	"ripgrep",
+	"tmux",
+	"tmux-plugin-manager",
 	"vnstat",
 	"wget",
+	"zoxide",
 	"zsh",
 	"zsh-autosuggestions",
 	"zsh-syntax-highlighting",

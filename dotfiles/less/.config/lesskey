@@ -1,0 +1,5 @@
+#env
+# ${LESS}: keep whatever already in LESS instead of replacing it
+# --RAW-CONTROL-CHARS: enable formatting such as colors, links, and bold
+# --clear-screen: when the content is shorter than the screen, display from the top instead of the bottom
+LESS = ${LESS} --RAW-CONTROL-CHARS --clear-screen

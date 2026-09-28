@@ -1,0 +1,9 @@
+# ignore /proc /sys /dev /run
+proc/
+sys/
+dev/
+run/
+
+# ignore .git/ and .cache/
+.git/
+.cache/
