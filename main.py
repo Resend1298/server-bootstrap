@@ -13,6 +13,7 @@ PACKAGES_TO_INSTALL = [
 	"fd-find",
 	"fzf",
 	"ripgrep",
+	"stow",
 	"tmux",
 	"tmux-plugin-manager",
 	"vnstat",
@@ -162,6 +163,15 @@ def install_oh_my_zsh():
 	Path("oh-my-zsh.sh").unlink()
 	# noinspection SpellCheckingInspection
 	run(["chsh", "-s", "/usr/bin/zsh"], check=True)
+	(Path.home() / ".zshrc").unlink()
+
+
+def stow_dotfiles():
+	dotfiles_dir = Path(__file__).parent / "dotfiles"
+
+	for i in dotfiles_dir.iterdir():
+		if i.is_dir():
+			run(["stow", "--restow", i.name], cwd=dotfiles_dir, check=True)
 
 
 def main():
@@ -177,6 +187,7 @@ def main():
 	enable_bbr()
 	install_paping()
 	install_oh_my_zsh()
+	stow_dotfiles()
 
 	console.print("Setup completed successfully. Consider rebooting the system.", style="green")
 
