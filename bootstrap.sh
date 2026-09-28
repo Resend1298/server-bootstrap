@@ -9,8 +9,8 @@ if [[ $EUID -ne 0 ]]; then
 	exit 1
 fi
 
-apt-get update
-apt-get install -y curl
+apt update
+apt install -y curl
 
 curl -LsSf https://astral.sh/uv/install.sh | env UV_NO_MODIFY_PATH=1 sh
 
