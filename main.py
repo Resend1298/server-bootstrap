@@ -66,29 +66,16 @@ def add_ssh_key(console: Console):
 	authorized_keys_file = ssh_dir / "authorized_keys"
 	authorized_keys_file.touch(mode=0o600, exist_ok=True)
 
-	console.rule("SSH Key Management")
-
 	with open(authorized_keys_file) as f:
-		current_authorized_keys = f.read()
-		if current_authorized_keys.strip() == "":
-			console.print("No authorized keys found.", style="yellow")
-		else:
-			console.print("Current authorized keys:")
-			for key in current_authorized_keys.splitlines():
-				# key comments may contain special characters, so we disable markup to avoid issues
-				console.print(key, markup=False)
+		current_authorized_keys = f.read().strip()
+	if current_authorized_keys != "":
+		return
 
+	console.rule("SSH Key Management")
 	new_key = Prompt.ask("Enter new SSH public key to add (or leave empty to skip)", default="", show_default=False)
 	if new_key:
-		if new_key in current_authorized_keys:
-			console.print("Key already exists in authorized_keys.", style="yellow")
-		else:
-			with open(authorized_keys_file, 'a') as f:
-				# it's necessary to check if the previous file ends with a \n
-				# otherwise, the result will be "key1key2\n" and both keys will be invalid
-				if current_authorized_keys.strip() != "" and not current_authorized_keys.endswith("\n"):
-					f.write("\n")
-				f.write(new_key + "\n")
+		with open(authorized_keys_file, 'a') as f:
+			f.write(new_key + "\n")
 
 
 def check_swap(console: Console):
