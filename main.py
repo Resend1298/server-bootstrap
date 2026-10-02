@@ -78,28 +78,6 @@ def add_ssh_key(console: Console):
 			f.write(new_key + "\n")
 
 
-def check_swap(console: Console):
-	with open("/proc/meminfo") as f:
-		for line in f:
-			if line.startswith("MemTotal:"):
-				mem_total_kb = int(line.split()[1])
-			if line.startswith("SwapTotal:"):
-				swap_total_kb = int(line.split()[1])
-	disk_free_bytes = disk_usage("/").free
-
-	mem_total_gb = mem_total_kb / 1024 / 1024
-	swap_total_gb = swap_total_kb / 1024 / 1024
-	disk_free_gb = round(disk_free_bytes / 1024 / 1024 / 1024)
-
-	console.rule("Swap Check")
-
-	console.print(f"Total Memory: {mem_total_gb:.2f} GB")
-	console.print(f"Total Swap: {swap_total_gb:.2f} GB")
-	console.print(f"Free Disk Space: {disk_free_gb} GB")
-
-	console.input("Manually adjust swap size if necessary. Press Enter to continue...")
-
-
 # noinspection SpellCheckingInspection
 def change_timezone(console: Console):
 	current_timezone = run(["timedatectl", "show", "-P", "Timezone"], capture_output=True, text=True).stdout.strip()
@@ -174,6 +152,28 @@ def stow_dotfiles():
 			run(["stow", "--restow", i.name], cwd=dotfiles_dir, check=True)
 
 
+def check_swap(console: Console):
+	with open("/proc/meminfo") as f:
+		for line in f:
+			if line.startswith("MemTotal:"):
+				mem_total_kb = int(line.split()[1])
+			if line.startswith("SwapTotal:"):
+				swap_total_kb = int(line.split()[1])
+	disk_free_bytes = disk_usage("/").free
+
+	mem_total_gb = mem_total_kb / 1024 / 1024
+	swap_total_gb = swap_total_kb / 1024 / 1024
+	disk_free_gb = round(disk_free_bytes / 1024 / 1024 / 1024)
+
+	console.rule("Swap Check")
+
+	console.print(f"Total Memory: {mem_total_gb:.2f} GB")
+	console.print(f"Total Swap: {swap_total_gb:.2f} GB")
+	console.print(f"Free Disk Space: {disk_free_gb} GB")
+
+	console.input("Manually adjust swap size if necessary. Press Enter to continue...")
+
+
 def main():
 	console = Console()
 	console_error = Console(stderr=True, style="red")
@@ -181,13 +181,13 @@ def main():
 	pre_check(console, console_error)
 	install_packages(console)
 	add_ssh_key(console)
-	check_swap(console)
 	change_timezone(console)
 	install_docker(console)
 	enable_bbr()
 	install_paping()
 	install_oh_my_zsh()
 	stow_dotfiles()
+	check_swap(console)
 
 	console.print("Setup completed successfully. Consider rebooting the system.", style="green")
 
