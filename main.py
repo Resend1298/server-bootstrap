@@ -117,6 +117,9 @@ def check_swap(console: Console):
 def change_timezone(console: Console):
 	current_timezone = run(["timedatectl", "show", "-P", "Timezone"], capture_output=True, text=True).stdout.strip()
 
+	if current_timezone != "Etc/UTC":
+		return
+
 	console.rule("Timezone Configuration")
 	console.print(f"Current Timezone: {current_timezone}")
 	new_timezone = Prompt.ask("Enter new timezone (e.g., 'Asia/Tokyo') or leave empty to skip", default="",
