@@ -12,6 +12,7 @@ from rich.prompt import Confirm, Prompt
 PACKAGES_TO_INSTALL = [
 	"fd-find",
 	"fzf",
+	"qemu-guest-agent",
 	"ripgrep",
 	"stow",
 	"tmux",
