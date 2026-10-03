@@ -10,6 +10,7 @@ from rich.prompt import Confirm, Prompt
 
 # noinspection SpellCheckingInspection
 PACKAGES_TO_INSTALL = [
+	"eza",
 	"fd-find",
 	"fzf",
 	"qemu-guest-agent",
