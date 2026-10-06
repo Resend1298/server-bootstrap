@@ -1,5 +1,9 @@
 # server-bootstrap
 
+[![wakatime](https://wakatime.com/badge/github/Resend1298/server-bootstrap.svg)](https://wakatime.com/badge/github/Resend1298/server-bootstrap)
+[![Python Version from PEP 621 TOML](https://img.shields.io/python/required-version-toml?tomlFilePath=https%3A%2F%2Fraw.githubusercontent.com%2FResend1298%2Fserver-bootstrap%2Frefs%2Fheads%2Fmaster%2Fpyproject.toml)](pyproject.toml)
+[![GitHub License](https://img.shields.io/github/license/Resend1298/server-bootstrap)](LICENSE)
+
 An interactive script that sets up a freshly installed server and can be rerun later to keep it up to date.
 
 ## What it does
