@@ -47,12 +47,16 @@ def pre_check(console: Console, console_error: Console):
 def install_packages(console: Console):
 	run(["apt", "update"], check=True)
 
-	upgrade_method_prompt = """Choose apt upgrade method:
+	if platform.freedesktop_os_release()["ID"] == "ubuntu":
+		upgrade_method = '1'
+	else:
+		upgrade_method_prompt = """Choose apt upgrade method:
 1. apt upgrade (default, normally you should choose this)
 2. apt full-upgrade (required on Proxmox VE / Proxmox Backup Server hosts, per the official Proxmox documentation)"""
-	console.rule("Upgrade Method")
-	console.print(upgrade_method_prompt)
-	upgrade_method = Prompt.ask("Upgrade method", choices=['1', '2'], default='1')
+		console.rule("Upgrade Method")
+		console.print(upgrade_method_prompt)
+		upgrade_method = Prompt.ask("Upgrade method", choices=['1', '2'], default='1')
+
 	if upgrade_method == '1':
 		run(["apt", "upgrade", "-y"], check=True)
 	else:
