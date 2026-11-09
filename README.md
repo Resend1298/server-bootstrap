@@ -15,7 +15,7 @@ Some examples of the changes it makes:
 - Installs Oh My Zsh
 - Customizes zsh, tmux, vim, and a few other tools
 
-See `bootstrap.sh` and `main.py` for all the steps.
+See `bootstrap.sh`, `update.sh`, and `main.py` for all the steps.
 See the `dotfiles` directory for the configuration files.
 
 Note that this project reflects personal preferences (obviously).
@@ -47,8 +47,9 @@ Keep the cloned repository where it is afterward: the dotfiles are symlinked int
 ## Updating
 
 ```shell
+cd /root/server-bootstrap
 git pull
-uv run main.py
+./update.sh
 ```
 
 ## Running on an existing server
