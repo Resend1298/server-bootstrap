@@ -11,3 +11,8 @@ alias ll="eza -l --no-permissions --no-user --no-time --no-filesize -a"
 # bat
 alias bat="batcat"
 alias cat="bat"
+
+# update
+alias ,u="cd /root/server-bootstrap && git pull && ./update.sh"
+alias ,up=",u && poweroff"
+alias ,ur=",u && reboot"

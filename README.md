@@ -52,6 +52,12 @@ git pull
 ./update.sh
 ```
 
+Alternatively, some convenient aliases are provided in the dotfiles:
+
+- `,u` (update): runs the commands above
+- `,up` (update + power off): runs `,u`, then `poweroff`
+- `,ur` (update + reboot): runs `,u`, then `reboot`
+
 ## Running on an existing server
 
 Existing files will not be overwritten, and the script will stop if it finds any.
